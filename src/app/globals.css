@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Menken STD Head Font
+ * ==================================
+ */
+@font-face {
+  font-family: 'Menken STD Head';
+  src: url('/fonts/MenkenStdHead-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * Chelon Font - Drop-in Instructions
+ * ==================================
+ * To use the Chelon font:
+ * 1. Place your Chelon font files (woff2, woff) in /public/fonts/
+ * 2. Uncomment the @font-face block below
+ * 3. The font will automatically apply to all headings
+ *
+ * @font-face {
+ *   font-family: 'Chelon';
+ *   src: url('/fonts/Chelon-Regular.woff2') format('woff2'),
+ *        url('/fonts/Chelon-Regular.woff') format('woff');
+ *   font-weight: 400;
+ *   font-style: normal;
+ *   font-display: swap;
+ * }
+ *
+ * @font-face {
+ *   font-family: 'Chelon';
+ *   src: url('/fonts/Chelon-Bold.woff2') format('woff2'),
+ *        url('/fonts/Chelon-Bold.woff') format('woff');
+ *   font-weight: 700;
+ *   font-style: normal;
+ *   font-display: swap;
+ * }
+ */
+
+@layer base {
+  :root {
+    /* Light mode (fallback only — app defaults to dark) */
+    --color-bg: #FCF7FE;
+    --color-surface: #ffffff;
+    --color-surface-raised: #f4f0f8;
+    --color-pale-pink: #F69BC9;
+    --color-deep-purple: #371d34;
+    --color-fuchsia: #E52E7D;
+    --color-bubblegum: #EB609D;
+    --color-poppy-red: #E40224;
+    --color-orange: #FF4A29;
+    --color-text: #111111;
+    --color-text-secondary: #5a5a5a;
+    --color-border-light: #E5E5E5;
+    --color-border-medium: #D1D1D1;
+    --color-input-bg: #f0eaf4;
+  }
+
+  .dark {
+    /* Dark Purple Brand Theme — primary */
+    --color-bg: #0e0710;
+    --color-surface: #1a0f1d;
+    --color-surface-raised: #221528;
+    --color-pale-pink: #F69BC9;
+    --color-deep-purple: #371d34;
+    --color-fuchsia: #E52E7D;
+    --color-bubblegum: #EB609D;
+    --color-poppy-red: #E40224;
+    --color-orange: #FF4A29;
+    --color-text: #f0eef2;
+    --color-text-secondary: #9987a5;
+    --color-border-light: #2a1a2e;
+    --color-border-medium: #3d2545;
+    --color-input-bg: #211428;
+  }
+
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-background text-text-primary font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  h1 { @apply text-4xl font-bold tracking-[0.08em]; }
+  h2 { @apply text-2xl font-semibold tracking-[0.08em]; }
+  h3 { @apply text-xl font-semibold tracking-[0.08em]; }
+  h4 { @apply text-lg font-medium tracking-[0.08em]; }
+}
+
+@layer components {
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 bg-fuchsia text-white font-medium rounded-lg hover:bg-bubblegum transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-fuchsia/50 focus:ring-offset-2 focus:ring-offset-transparent;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2 bg-[var(--color-surface-raised)] text-text-primary font-medium rounded-lg hover:bg-[var(--color-border-medium)] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-fuchsia/30;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center px-4 py-2 bg-poppy-red text-white font-medium rounded-lg hover:bg-poppy-red/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-poppy-red/50;
+  }
+
+  /* ── Cards (kept for data display sections, not forms) ── */
+  .card {
+    @apply bg-[var(--color-surface)] rounded-xl border border-[var(--color-border-light)] p-6;
+  }
+
+  /* ── Inputs — borderless, subtle fill only ── */
+  .input {
+    @apply w-full px-4 py-2.5 rounded-lg
+           bg-[var(--color-input-bg)]
+           text-text-primary
+           placeholder:text-text-secondary
+           border-0 outline-none ring-0
+           focus:bg-[var(--color-surface-raised)]
+           focus:ring-2 focus:ring-fuchsia/40
+           transition-all duration-200
+           appearance-none;
+  }
+
+  /* Select needs explicit background to override OS defaults */
+  select.input {
+    @apply cursor-pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239987a5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 2.5rem;
+  }
+
+  /* ── Phase Opacity for Gantt ── */
+  .phase-1 { @apply opacity-40; }
+  .phase-2 { @apply opacity-100; }
+
+  /* ── Status Pills ── */
+  .status-planned    { @apply bg-status-planned/20 text-status-planned; }
+  .status-in-progress{ @apply bg-status-progress/20 text-status-progress; }
+  .status-blocked    { @apply bg-status-blocked/20 text-status-blocked; }
+  .status-complete   { @apply bg-status-complete/20 text-status-complete; }
+}
+
+@layer utilities {
+  .gradient-fuchsia {
+    background: linear-gradient(135deg, #E52E7D 0%, #EB609D 100%);
+  }
+  .gradient-orange {
+    background: linear-gradient(135deg, #FF4A29 0%, #F69BC9 100%);
+  }
+  .gradient-poppy {
+    background: linear-gradient(135deg, #E40224 0%, #EB609D 100%);
+  }
+}
