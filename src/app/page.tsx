@@ -1,10 +1,49 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
 export default function Home() {
+    const router = useRouter();
+
+    useEffect(() => {
+        // Supabase implicit flow sends tokens as URL hash fragments.
+        // Hash fragments are never sent to the server so we handle them client-side.
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        const params = new URLSearchParams(hash.substring(1)); // strip leading #
+        const accessToken = params.get("access_token");
+        const refreshToken = params.get("refresh_token");
+        const type = params.get("type");
+
+        if (accessToken && refreshToken) {
+            const supabase = createClient();
+            supabase.auth
+                .setSession({ access_token: accessToken, refresh_token: refreshToken })
+                .then(({ error }) => {
+                    if (error) {
+                        console.error("Error setting session:", error);
+                        router.push("/login?error=invalid_link");
+                        return;
+                    }
+                    // Password recovery → go to update password page
+                    if (type === "recovery") {
+                        router.push("/update-password");
+                    } else {
+                        // Magic link sign-in → go to dashboard
+                        router.push("/dashboard");
+                    }
+                });
+        }
+    }, [router]);
+
     return (
         <main className="min-h-screen flex flex-col items-center justify-center p-8">
             <div className="text-center space-y-8 max-w-2xl">
-                {/* IMC Logo Placeholder */}
+                {/* IMC Logo */}
                 <div className="flex justify-center">
                     <div className="w-16 h-16 rounded-full gradient-fuchsia flex items-center justify-center">
                         <span className="text-white font-heading text-2xl font-bold">IMC</span>
@@ -27,22 +66,6 @@ export default function Home() {
                     <Link href="/dashboard" className="btn-secondary">
                         Dashboard
                     </Link>
-                </div>
-
-                {/* Quick Stats Preview */}
-                <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-border-light">
-                    <div className="text-center">
-                        <div className="text-3xl font-heading font-bold text-fuchsia">12</div>
-                        <div className="text-sm text-text-secondary">Active Projects</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl font-heading font-bold text-orange">48</div>
-                        <div className="text-sm text-text-secondary">Deliverables</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl font-heading font-bold text-bubblegum">8</div>
-                        <div className="text-sm text-text-secondary">Clients</div>
-                    </div>
                 </div>
             </div>
         </main>
