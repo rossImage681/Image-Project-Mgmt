@@ -36,14 +36,19 @@ export default function LoginPage() {
         <div className="min-h-screen flex items-center justify-center bg-background p-4">
             <div className="w-full max-w-sm">
                 {/* Logo mark */}
-                <div className="mb-10 flex flex-col items-start">
-                    <div className="inline-flex w-10 h-10 rounded-lg gradient-fuchsia items-center justify-center mb-6">
-                        <span className="text-white font-heading text-sm font-bold tracking-widest">IMC</span>
-                    </div>
+                <div className="mb-10 flex flex-col items-center">
+                    <Image
+                        src="/image-mgmt-logo.png"
+                        alt="IMAGE MGMT"
+                        width={160}
+                        height={160}
+                        className="mb-6"
+                        priority
+                    />
                     <h1 className="text-3xl font-heading font-bold text-text-primary tracking-tight">
                         Welcome back
                     </h1>
-                    <p className="text-text-secondary mt-1.5 text-sm">Sign in to IMC Project Scheduler</p>
+                    <p className="text-text-secondary mt-1.5 text-sm">Sign in to IMAGE MGMT</p>
                 </div>
 
                 {/* Error */}
