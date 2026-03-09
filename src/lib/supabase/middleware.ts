@@ -48,7 +48,8 @@ export async function updateSession(request: NextRequest) {
         request.nextUrl.pathname.startsWith("/projects") ||
         request.nextUrl.pathname.startsWith("/portfolio") ||
         request.nextUrl.pathname.startsWith("/templates") ||
-        request.nextUrl.pathname.startsWith("/clients");
+        request.nextUrl.pathname.startsWith("/clients") ||
+        request.nextUrl.pathname.startsWith("/assets");
 
     const isAuthRoute = request.nextUrl.pathname.startsWith("/login") ||
         request.nextUrl.pathname.startsWith("/signup") ||

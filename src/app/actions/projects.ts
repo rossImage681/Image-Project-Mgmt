@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
+import { ensureClientFolder, ensureProjectFolder } from "./assets";
 
 export async function createProject(formData: FormData) {
     const supabase = createAdminClient();
@@ -21,6 +22,19 @@ export async function createProject(formData: FormData) {
     if (error || !data) {
         console.error("Error creating project:", error);
         redirect("/projects?error=create_failed");
+    }
+
+    // Auto-create DAM folder hierarchy
+    const { data: client } = await supabase
+        .from("clients")
+        .select("name")
+        .eq("id", client_id)
+        .single();
+    if (client) {
+        const clientFolderId = await ensureClientFolder(client_id, client.name);
+        if (clientFolderId) {
+            await ensureProjectFolder(client_id, data.id, name, clientFolderId);
+        }
     }
 
     redirect(`/projects/${data.id}`);

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
+import { ensureClientFolder } from "./assets";
 
 const DEFAULT_COLORS = [
     "#E52E7D", "#7C3AED", "#0EA5E9", "#10B981",
@@ -31,6 +32,9 @@ export async function createClient(formData: FormData) {
         redirect("/clients/new?error=create_failed");
     }
 
+    // Auto-create DAM folder
+    await ensureClientFolder(data.id, name);
+
     redirect(`/clients/${data.id}`);
 }
 
@@ -50,5 +54,9 @@ export async function createClientInline(
         .single();
 
     if (error || !data) return { error: error?.message || "Failed to create client" };
+
+    // Auto-create DAM folder
+    await ensureClientFolder(data.id, data.name);
+
     return data;
 }
