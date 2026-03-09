@@ -41,7 +41,13 @@ export default async function ClientsPage() {
             <Header
                 title="Clients"
                 subtitle="All clients and their project summaries"
+                actions={
+                    <Link href="/clients/new" className="btn-primary">
+                        + New Client
+                    </Link>
+                }
             />
+
 
             <div className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
